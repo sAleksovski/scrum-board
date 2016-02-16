@@ -1,0 +1,14 @@
+db:
+  url: jdbc:mysql://localhost:3306/scrum?useUnicode=true&characterEncoding=UTF-8
+  username: scrum
+  password: scrum
+  driver: com.mysql.jdbc.Driver
+
+hibernate:
+  dialect: org.hibernate.dialect.MySQL5InnoDBDialect
+  format_sql: true
+  hbm2ddl:
+    auto: update
+  ejb:
+    naming_strategy: org.hibernate.cfg.ImprovedNamingStrategy
+  show_sql: false
