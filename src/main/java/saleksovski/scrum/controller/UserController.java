@@ -22,10 +22,10 @@ public class UserController {
     @Autowired
     UsersConnectionRepository usersConnectionRepository;
 
-    @RequestMapping(value = "/api/user")
+    @RequestMapping("/api/user")
     public
     @ResponseBody
-    MyUser test() {
+    MyUser user() {
         String userId;
         try {
             userId = SecurityUtil.getUserDetails().getUserId();

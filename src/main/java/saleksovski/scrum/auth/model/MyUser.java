@@ -1,5 +1,6 @@
 package saleksovski.scrum.auth.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.social.security.SocialUser;
@@ -34,6 +35,10 @@ public class MyUser extends SocialUser {
 
     @Column(name = "email", length = 100, nullable = false, unique = true)
     private String email;
+
+    @JsonIgnore
+    @Column(name = "password")
+    private String password;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "social_sign_in_provider", length = 20)
@@ -94,6 +99,15 @@ public class MyUser extends SocialUser {
         this.email = email;
     }
 
+    @Override
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
     public SocialMediaService getSocialSignInProvider() {
         return socialSignInProvider;
     }
@@ -108,6 +122,19 @@ public class MyUser extends SocialUser {
 
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
+    }
+
+    @Override
+    public String toString() {
+        return "MyUser{" +
+                "id=" + id +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", role=" + role +
+                ", email='" + email + '\'' +
+                ", socialSignInProvider=" + socialSignInProvider +
+                ", imageUrl='" + imageUrl + '\'' +
+                '}';
     }
 
     public static class Builder {
