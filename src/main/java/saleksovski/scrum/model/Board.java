@@ -1,10 +1,12 @@
 package saleksovski.scrum.model;
 
-import saleksovski.scrum.auth.model.MyUser;
+import org.hibernate.annotations.*;
+import org.hibernate.annotations.CascadeType;
 
 import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 /**
@@ -27,12 +29,9 @@ public class Board extends BaseEntity<Long> {
     @OneToMany
     private Set<Task> tasks = new HashSet<>();
 
-    @ManyToMany
-    @JoinTable(
-            name="board_users",
-            joinColumns=@JoinColumn(name="board_id", referencedColumnName="id"),
-            inverseJoinColumns=@JoinColumn(name="user_id", referencedColumnName="id"))
-    private List<MyUser> users;
+    @OneToMany
+//    @Cascade({CascadeType.SAVE_UPDATE, CascadeType.DELETE})
+    private Set<BoardUserRole> boardUserRole = new HashSet<>();
 
     @Override
     public Long getId() {
@@ -63,12 +62,11 @@ public class Board extends BaseEntity<Long> {
         this.tasks = tasks;
     }
 
-    public List<MyUser> getUsers() {
-        return users;
+    public Set<BoardUserRole> getBoardUserRole() {
+        return boardUserRole;
     }
 
-    public void setUsers(List<MyUser> users) {
-        this.users = users;
+    public void setBoardUserRole(Set<BoardUserRole> boardUserRole) {
+        this.boardUserRole = boardUserRole;
     }
-
 }

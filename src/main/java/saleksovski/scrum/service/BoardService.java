@@ -2,9 +2,15 @@ package saleksovski.scrum.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import saleksovski.scrum.auth.SecurityUtil;
+import saleksovski.scrum.auth.exception.UserNotAuthenticated;
 import saleksovski.scrum.auth.model.MyUser;
+import saleksovski.scrum.enums.UserRole;
 import saleksovski.scrum.model.Board;
+import saleksovski.scrum.model.BoardUserRole;
 import saleksovski.scrum.repository.BoardRepository;
+import saleksovski.scrum.repository.BoardUserRoleRepository;
+import saleksovski.scrum.utils.StringUtils;
 
 import java.util.List;
 
@@ -15,10 +21,12 @@ import java.util.List;
 public class BoardService {
 
     private BoardRepository boardRepository;
+    private BoardUserRoleRepository boardUserRoleRepository;
 
     @Autowired
-    public BoardService(BoardRepository boardRepository) {
+    public BoardService(BoardRepository boardRepository, BoardUserRoleRepository boardUserRoleRepository) {
         this.boardRepository = boardRepository;
+        this.boardUserRoleRepository = boardUserRoleRepository;
     }
 
     public Iterable<Board> findAll() {
@@ -30,11 +38,31 @@ public class BoardService {
     }
 
     public List<Board> findByUser(MyUser user) {
-        return boardRepository.findByUsers(user);
+        return boardRepository.findByboardUserRoleUser(user);
     }
 
     public Board findBySlug(String slug) {
         return boardRepository.findBySlug(slug);
+    }
+
+    public Board createBoard(String name) throws UserNotAuthenticated {
+        Board board = new Board();
+        board.setName(name);
+        String slug = StringUtils.randomString(8);
+        while (findBySlug(slug) != null) {
+            slug = StringUtils.randomString(8);
+        }
+        board.setSlug(StringUtils.randomString(8));
+        BoardUserRole boardUserRole = new BoardUserRole();
+        boardUserRole.setRole(UserRole.ROLE_ADMIN);
+        boardUserRole.setUser(SecurityUtil.getUserDetails());
+        boardUserRole = boardUserRoleRepository.save(boardUserRole);
+        board.getBoardUserRole().add(boardUserRole);
+        return boardRepository.save(board);
+    }
+
+    public BoardUserRole saveBoardUserRole(BoardUserRole boardUserRole) {
+        return boardUserRoleRepository.save(boardUserRole);
     }
 
 }

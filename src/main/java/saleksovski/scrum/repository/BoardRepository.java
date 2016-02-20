@@ -1,6 +1,5 @@
 package saleksovski.scrum.repository;
 
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import saleksovski.scrum.auth.model.MyUser;
 import saleksovski.scrum.model.Board;
@@ -15,5 +14,5 @@ public interface BoardRepository extends CrudRepository<Board, Long> {
     Board findBySlug(String slug);
 
 //    @Query("select b from Board b join b.users id where ?1 in (VALUE(id))")
-    List<Board> findByUsers(MyUser user);
+    List<Board> findByboardUserRoleUser(MyUser user);
 }

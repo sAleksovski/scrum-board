@@ -4,10 +4,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import saleksovski.scrum.auth.SecurityUtil;
 import saleksovski.scrum.auth.exception.UserNotAuthenticated;
-import saleksovski.scrum.enums.BoardUserRole;
+import saleksovski.scrum.enums.UserRole;
 import saleksovski.scrum.model.Board;
+import saleksovski.scrum.model.BoardUserRole;
 import saleksovski.scrum.service.BoardService;
-import saleksovski.scrum.utils.StringUtils;
 
 /**
  * Created by stefan on 2/20/16.
@@ -42,23 +42,21 @@ public class BoardController {
     public
     @ResponseBody
     Board saveBoard(@RequestBody String name) throws UserNotAuthenticated {
-        Board board = new Board();
-        board.setName(name);
-        board.setSlug(StringUtils.randomString(8));
-        board.getUsers().add(SecurityUtil.getUserDetails());
-//        board.getUserRoles().put(SecurityUtil.getUserDetails(), BoardUserRole.ROLE_ADMIN);
-        return boardService.save(board);
+        return boardService.createBoard(name);
     }
 
     @RequestMapping(value = "/editboard")
     public
     @ResponseBody
     Board editBoard() throws UserNotAuthenticated {
-        Board b = boardService.findBySlug("bHfSYRGl");
-        b.getUsers().add(SecurityUtil.getUserDetails());
-//        b.getUserRoles().put(SecurityUtil.getUserDetails(), BoardUserRole.ROLE_USER);
-        b = boardService.save(b);
-        return b;
+        Board board = boardService.findBySlug("TmQrV1iA");
+        BoardUserRole boardUserRole = new BoardUserRole();
+        boardUserRole.setRole(UserRole.ROLE_USER);
+        boardUserRole.setUser(SecurityUtil.getUserDetails());
+        boardUserRole = boardService.saveBoardUserRole(boardUserRole);
+        board.getBoardUserRole().add(boardUserRole);
+        board = boardService.save(board);
+        return board;
     }
 
 }
