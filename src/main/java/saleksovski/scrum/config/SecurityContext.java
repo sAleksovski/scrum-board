@@ -55,6 +55,7 @@ public class SecurityContext extends WebSecurityConfigurerAdapter {
                         "/auth/twitter",
                         "/auth/logout",
                         "/signup/**",
+                        "/signin",
                         "/user/register/**"
                 ).permitAll()
                 //The rest of the our application is protected.

@@ -1,12 +1,12 @@
 package saleksovski.scrum.auth.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import saleksovski.scrum.auth.model.User;
+import saleksovski.scrum.auth.model.MyUser;
 
 /**
  * Created by stefan on 1/14/16.
  */
-public interface UserRepository extends JpaRepository<User, Long> {
+public interface UserRepository extends JpaRepository<MyUser, Long> {
 
-    User findByEmail(String email);
+    MyUser findByEmail(String email);
 }

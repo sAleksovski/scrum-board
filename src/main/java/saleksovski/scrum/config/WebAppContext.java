@@ -3,10 +3,10 @@ package saleksovski.scrum.config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.*;
-import org.springframework.web.servlet.handler.SimpleMappingExceptionResolver;
-
-import java.util.Properties;
+import org.springframework.web.servlet.view.InternalResourceViewResolver;
+import org.springframework.web.servlet.view.JstlView;
 
 /**
  * Created by stefan on 1/14/16.
@@ -50,16 +50,16 @@ public class WebAppContext extends WebMvcConfigurerAdapter {
 //        return exceptionResolver;
 //    }
 
-//    @Bean
-//    public ViewResolver viewResolver() {
-//        InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
-//
-//        viewResolver.setViewClass(JstlView.class);
-//        viewResolver.setPrefix("/WEB-INF/jsp/");
-//        viewResolver.setSuffix(".jsp");
-//
-//        return viewResolver;
-//    }
+    @Bean
+    public ViewResolver viewResolver() {
+        InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
+
+        viewResolver.setViewClass(JstlView.class);
+        viewResolver.setPrefix("/static/");
+        viewResolver.setSuffix(".html");
+
+        return viewResolver;
+    }
 
     @Override
     public void addCorsMappings(CorsRegistry registry) {

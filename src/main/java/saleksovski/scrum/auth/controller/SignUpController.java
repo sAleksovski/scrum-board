@@ -1,13 +1,15 @@
 package saleksovski.scrum.auth.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.social.connect.*;
+import org.springframework.social.connect.Connection;
+import org.springframework.social.connect.ConnectionFactoryLocator;
+import org.springframework.social.connect.UsersConnectionRepository;
 import org.springframework.social.connect.web.ProviderSignInUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.context.request.WebRequest;
 import saleksovski.scrum.auth.SecurityUtil;
-import saleksovski.scrum.auth.model.User;
+import saleksovski.scrum.auth.model.MyUser;
 import saleksovski.scrum.auth.repository.UserRepository;
 import saleksovski.scrum.auth.service.UserService;
 
@@ -21,7 +23,7 @@ public class SignUpController {
     ProviderSignInUtils providerSignInUtils;
 
     @Autowired
-    private UserService service;
+    private UserService userService;
 
     @Autowired
     public SignUpController(UserRepository userRepository,
@@ -35,17 +37,15 @@ public class SignUpController {
     public String redirectRequestToRegistrationPage(WebRequest request) {
         Connection<?> connection = providerSignInUtils.getConnectionFromSession(request);
         if (connection != null) {
-            UserProfile userProfile = connection.fetchUserProfile();
-            ConnectionKey providerKey = connection.getKey();
-            User registered = createUserAccount(userProfile, providerKey);
+            MyUser registered = createUserAccount(connection);
             SecurityUtil.logInUser(registered);
             providerSignInUtils.doPostSignUp(registered.getEmail(), request);
         }
         return "redirect:http://localhost:8000/";
     }
 
-    private User createUserAccount(UserProfile userAccountData, ConnectionKey providerKey) {
-        return service.registerNewUserAccount(userAccountData, providerKey);
+    private MyUser createUserAccount(Connection<?> connection) {
+        return userService.registerNewUserAccount(connection);
     }
 
 }

@@ -1,12 +1,13 @@
 package saleksovski.scrum.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.social.connect.UsersConnectionRepository;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import saleksovski.scrum.auth.SecurityUtil;
 import saleksovski.scrum.auth.exception.UserNotAuthenticated;
-import saleksovski.scrum.auth.model.User;
+import saleksovski.scrum.auth.model.MyUser;
 import saleksovski.scrum.auth.repository.UserRepository;
 
 /**
@@ -18,10 +19,13 @@ public class UserController {
     @Autowired
     UserRepository userRepository;
 
+    @Autowired
+    UsersConnectionRepository usersConnectionRepository;
+
     @RequestMapping(value = "/api/user")
     public
     @ResponseBody
-    User test() {
+    MyUser test() {
         String userId;
         try {
             userId = SecurityUtil.getUserDetails().getUserId();
@@ -31,7 +35,8 @@ public class UserController {
         if (userId != null) {
             return userRepository.findByEmail(userId);
         }
-        return new User();
+
+        return null;
     }
 
 }

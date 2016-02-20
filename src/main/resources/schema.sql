@@ -40,7 +40,7 @@ CREATE TABLE IF NOT EXISTS `UserConnection` (
   `expireTime` bigint(20) DEFAULT NULL,
   PRIMARY KEY (`userId`,`providerId`,`providerUserId`),
   UNIQUE KEY `UserConnectionRank` (`userId`,`providerId`,`rank`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
