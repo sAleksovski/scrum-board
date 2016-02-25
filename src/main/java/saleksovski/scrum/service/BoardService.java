@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import saleksovski.scrum.auth.SecurityUtil;
 import saleksovski.scrum.auth.exception.UserNotAuthenticated;
 import saleksovski.scrum.auth.model.MyUser;
+import saleksovski.scrum.auth.repository.UserRepository;
 import saleksovski.scrum.enums.UserRole;
 import saleksovski.scrum.model.Board;
 import saleksovski.scrum.model.BoardUserRole;
@@ -20,25 +21,19 @@ import java.util.List;
 @Service
 public class BoardService {
 
+    private UserRepository userRepository;
     private BoardRepository boardRepository;
     private BoardUserRoleRepository boardUserRoleRepository;
 
     @Autowired
-    public BoardService(BoardRepository boardRepository, BoardUserRoleRepository boardUserRoleRepository) {
+    public BoardService(UserRepository userRepository, BoardRepository boardRepository, BoardUserRoleRepository boardUserRoleRepository) {
+        this.userRepository = userRepository;
         this.boardRepository = boardRepository;
         this.boardUserRoleRepository = boardUserRoleRepository;
     }
 
-    public Iterable<Board> findAll() {
-        return boardRepository.findAll();
-    }
-
-    public Board save(Board board) {
-        return boardRepository.save(board);
-    }
-
     public List<Board> findByUser(MyUser user) {
-        return boardRepository.findByboardUserRoleUser(user);
+        return boardRepository.findByBoardUserRoleUser(user);
     }
 
     public Board findBySlug(String slug) {
@@ -52,17 +47,37 @@ public class BoardService {
         while (findBySlug(slug) != null) {
             slug = StringUtils.randomString(8);
         }
-        board.setSlug(StringUtils.randomString(8));
+        board.setSlug(slug);
+        board = boardRepository.save(board);
         BoardUserRole boardUserRole = new BoardUserRole();
-        boardUserRole.setRole(UserRole.ROLE_ADMIN);
+        boardUserRole.setBoard(board);
         boardUserRole.setUser(SecurityUtil.getUserDetails());
-        boardUserRole = boardUserRoleRepository.save(boardUserRole);
-        board.getBoardUserRole().add(boardUserRole);
-        return boardRepository.save(board);
+        boardUserRole.setRole(UserRole.ROLE_ADMIN);
+        boardUserRoleRepository.save(boardUserRole);
+        return board;
     }
 
-    public BoardUserRole saveBoardUserRole(BoardUserRole boardUserRole) {
-        return boardUserRoleRepository.save(boardUserRole);
+    public Board updateBoard(Board board) {
+        Board myBoard = boardRepository.findBySlug(board.getSlug());
+        if (myBoard != null) {
+            myBoard.setName(board.getName());
+            return boardRepository.save(myBoard);
+        }
+        return null;
+    }
+
+    public Board addUserToBoard(String slug, MyUser user, UserRole userRole) {
+        Board myBoard = boardRepository.findBySlug(slug);
+        MyUser myUser = userRepository.findByEmail(user.getEmail());
+        BoardUserRole boardUserRole = boardUserRoleRepository.findByBoardAndUserAndRole(myBoard, myUser, userRole);
+        if (boardUserRole == null) {
+            boardUserRole = new BoardUserRole();
+            boardUserRole.setBoard(myBoard);
+            boardUserRole.setUser(myUser);
+            boardUserRole.setRole(userRole);
+            boardUserRoleRepository.save(boardUserRole);
+        }
+        return myBoard;
     }
 
 }

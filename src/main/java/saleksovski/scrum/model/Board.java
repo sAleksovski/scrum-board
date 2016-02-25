@@ -1,11 +1,6 @@
 package saleksovski.scrum.model;
 
-import org.hibernate.annotations.*;
-import org.hibernate.annotations.CascadeType;
-
 import javax.persistence.*;
-import javax.persistence.Entity;
-import javax.persistence.Table;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -29,8 +24,7 @@ public class Board extends BaseEntity<Long> {
     @OneToMany
     private Set<Task> tasks = new HashSet<>();
 
-    @OneToMany
-//    @Cascade({CascadeType.SAVE_UPDATE, CascadeType.DELETE})
+    @OneToMany(mappedBy = "board")
     private Set<BoardUserRole> boardUserRole = new HashSet<>();
 
     @Override

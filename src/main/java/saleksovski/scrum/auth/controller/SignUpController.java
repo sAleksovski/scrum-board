@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.context.request.WebRequest;
 import saleksovski.scrum.auth.SecurityUtil;
 import saleksovski.scrum.auth.model.MyUser;
-import saleksovski.scrum.auth.repository.UserRepository;
 import saleksovski.scrum.auth.service.UserService;
 
 /**
@@ -19,17 +18,14 @@ import saleksovski.scrum.auth.service.UserService;
 @Controller
 public class SignUpController {
 
-    UserRepository userRepository;
-    ProviderSignInUtils providerSignInUtils;
+    private ProviderSignInUtils providerSignInUtils;
 
     @Autowired
     private UserService userService;
 
     @Autowired
-    public SignUpController(UserRepository userRepository,
-                            ConnectionFactoryLocator connectionFactoryLocator,
+    public SignUpController(ConnectionFactoryLocator connectionFactoryLocator,
                             UsersConnectionRepository connectionRepository) {
-        this.userRepository = userRepository;
         this.providerSignInUtils = new ProviderSignInUtils(connectionFactoryLocator, connectionRepository);
     }
 

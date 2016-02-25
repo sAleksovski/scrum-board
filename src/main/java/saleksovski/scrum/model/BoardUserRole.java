@@ -1,5 +1,6 @@
 package saleksovski.scrum.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import saleksovski.scrum.auth.model.MyUser;
 import saleksovski.scrum.enums.UserRole;
 
@@ -17,15 +18,27 @@ public class BoardUserRole extends BaseEntity<Long> {
     private Long id;
 
     @ManyToOne
-    MyUser user;
+    @JsonIgnore
+    private Board board;
+
+    @ManyToOne
+    private MyUser user;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "role", length = 20, nullable = false)
-    UserRole role;
+    private UserRole role;
 
     @Override
     public Long getId() {
         return id;
+    }
+
+    public Board getBoard() {
+        return board;
+    }
+
+    public void setBoard(Board board) {
+        this.board = board;
     }
 
     public MyUser getUser() {

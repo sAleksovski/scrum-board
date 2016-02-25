@@ -10,6 +10,8 @@ import saleksovski.scrum.auth.exception.UserNotAuthenticated;
 import saleksovski.scrum.auth.model.MyUser;
 import saleksovski.scrum.auth.repository.UserRepository;
 
+import java.util.List;
+
 /**
  * Created by stefan on 2/16/16.
  */
@@ -37,6 +39,13 @@ public class UserController {
         }
 
         return null;
+    }
+
+    @RequestMapping("/api/users")
+    public
+    @ResponseBody
+    List<MyUser> getAllUser() {
+        return userRepository.findAll();
     }
 
 }

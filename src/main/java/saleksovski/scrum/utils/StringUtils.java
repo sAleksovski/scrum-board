@@ -7,10 +7,10 @@ import java.security.SecureRandom;
  */
 public class StringUtils {
 
-    static final String chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
-    static SecureRandom rnd = new SecureRandom();
+    private static final String chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+    private static SecureRandom rnd = new SecureRandom();
 
-    public static String randomString( int len ){
+    public static String randomString(int len){
         StringBuilder sb = new StringBuilder( len );
         for( int i = 0; i < len; i++ )
             sb.append(chars.charAt(rnd.nextInt(chars.length())));

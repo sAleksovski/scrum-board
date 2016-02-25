@@ -1,12 +1,14 @@
 package saleksovski.scrum.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import saleksovski.scrum.auth.SecurityUtil;
 import saleksovski.scrum.auth.exception.UserNotAuthenticated;
+import saleksovski.scrum.auth.model.MyUser;
 import saleksovski.scrum.enums.UserRole;
 import saleksovski.scrum.model.Board;
-import saleksovski.scrum.model.BoardUserRole;
 import saleksovski.scrum.service.BoardService;
 
 /**
@@ -22,41 +24,53 @@ public class BoardController {
     @RequestMapping(method = RequestMethod.GET)
     public
     @ResponseBody
-    Iterable<Board> boards() {
+    ResponseEntity<Iterable<Board>> boards() {
         try {
-            return boardService.findByUser(SecurityUtil.getUserDetails());
+            return new ResponseEntity<>(boardService.findByUser(SecurityUtil.getUserDetails()), HttpStatus.OK);
         } catch (UserNotAuthenticated userNotAuthenticated) {
             userNotAuthenticated.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
-        return null;
     }
 
     @RequestMapping(value = "/{slug}", method = RequestMethod.GET)
     public
     @ResponseBody
-    Board boardBySlug(@PathVariable String slug) {
-        return boardService.findBySlug(slug);
+    ResponseEntity<Board> boardBySlug(@PathVariable String slug) {
+        Board board = boardService.findBySlug(slug);
+        if (board != null) {
+            return new ResponseEntity<>(board, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
     @RequestMapping(method = RequestMethod.POST)
     public
     @ResponseBody
-    Board saveBoard(@RequestBody String name) throws UserNotAuthenticated {
-        return boardService.createBoard(name);
+    ResponseEntity<Board> saveBoard(@RequestBody String name) throws UserNotAuthenticated {
+        return new ResponseEntity<>(boardService.createBoard(name), HttpStatus.CREATED);
     }
 
-    @RequestMapping(value = "/editboard")
+    @RequestMapping(value = "/{slug}", method = RequestMethod.PUT)
     public
     @ResponseBody
-    Board editBoard() throws UserNotAuthenticated {
-        Board board = boardService.findBySlug("TmQrV1iA");
-        BoardUserRole boardUserRole = new BoardUserRole();
-        boardUserRole.setRole(UserRole.ROLE_USER);
-        boardUserRole.setUser(SecurityUtil.getUserDetails());
-        boardUserRole = boardService.saveBoardUserRole(boardUserRole);
-        board.getBoardUserRole().add(boardUserRole);
-        board = boardService.save(board);
-        return board;
+    ResponseEntity<Board> editBoard(@PathVariable String slug, @RequestBody Board board) {
+        if (slug.equals(board.getSlug())) {
+            Board myBoard = boardService.updateBoard(board);
+            if (myBoard != null) {
+                return new ResponseEntity<>(boardService.updateBoard(board), HttpStatus.OK);
+            }
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }
+
+    @RequestMapping(value = "/{slug}/users", method = RequestMethod.POST)
+    public
+    @ResponseBody
+    ResponseEntity<Board> editBoard(@PathVariable String slug, @RequestBody MyUser user) {
+        return new ResponseEntity<>(boardService.addUserToBoard(slug, user, UserRole.ROLE_USER), HttpStatus.OK);
     }
 
 }
