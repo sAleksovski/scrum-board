@@ -59,16 +59,21 @@ public class BoardService {
 
     public Board updateBoard(Board board) {
         Board myBoard = boardRepository.findBySlug(board.getSlug());
-        if (myBoard != null) {
-            myBoard.setName(board.getName());
-            return boardRepository.save(myBoard);
+        if (myBoard == null) {
+            return null;
         }
-        return null;
+        myBoard.setName(board.getName());
+        return boardRepository.save(myBoard);
     }
 
     public Board addUserToBoard(String slug, MyUser user, UserRole userRole) {
         Board myBoard = boardRepository.findBySlug(slug);
         MyUser myUser = userRepository.findByEmail(user.getEmail());
+        if (myBoard == null
+                || myUser == null
+                || userRole == null) {
+            return null;
+        }
         BoardUserRole boardUserRole = boardUserRoleRepository.findByBoardAndUserAndRole(myBoard, myUser, userRole);
         if (boardUserRole == null) {
             boardUserRole = new BoardUserRole();

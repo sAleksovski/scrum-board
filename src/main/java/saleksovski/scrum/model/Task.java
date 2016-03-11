@@ -1,5 +1,6 @@
 package saleksovski.scrum.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import saleksovski.auth.model.MyUser;
 import saleksovski.scrum.model.enums.TaskProgress;
 
@@ -29,6 +30,7 @@ public class Task extends BaseEntity<Long> {
     private String description;
 
     @ManyToOne
+    @JsonIgnore
     private Sprint sprint;
 
     @Enumerated(EnumType.STRING)

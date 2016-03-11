@@ -26,18 +26,28 @@ public class SprintService {
 
     public Set<Sprint> findByBoardSlug(String slug) {
         Board board = boardRepository.findBySlug(slug);
-        if (board != null) {
-            return board.getSprints();
+        if (board == null) {
+            return null;
+        }
+        return board.getSprints();
+    }
+
+    public Sprint findByBoardSlugSprintId(String slug, Long id) {
+        Sprint sprint = sprintRepository.findOne(id);
+        if (sprint == null) {
+            return null;
+        }
+        if (sprint.getBoard().getSlug().equals(slug)) {
+            return sprint;
         }
         return null;
     }
 
-    public Sprint findById(Long id) {
-        return sprintRepository.findOne(id);
-    }
-
     public Sprint createSprint(String slug, Sprint sprint) {
         Board board = boardRepository.findBySlug(slug);
+        if (board == null) {
+            return null;
+        }
         sprint.setBoard(board);
         return sprintRepository.save(sprint);
     }

@@ -7,5 +7,6 @@ public enum TaskProgress {
     TODO,
     IN_PROGRESS,
     TESTING,
+    BLOCKED,
     DONE
 }

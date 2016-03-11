@@ -3,9 +3,7 @@ package saleksovski.scrum.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import saleksovski.scrum.model.Task;
 import saleksovski.scrum.service.TaskService;
 
@@ -24,10 +22,28 @@ public class TaskController {
     @RequestMapping
     public ResponseEntity<List<Task>> index(@PathVariable String slug, @PathVariable Long sprintId) {
         List<Task> tasks = taskService.findByBoardAndSprint(slug, sprintId);
-        if (tasks != null) {
-            return new ResponseEntity<>(tasks, HttpStatus.OK);
+        if (tasks == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(tasks, HttpStatus.OK);
+    }
+
+    @RequestMapping(method = RequestMethod.POST)
+    public ResponseEntity<Task> createTask(@PathVariable String slug, @PathVariable Long sprintId, @RequestBody Task task) {
+        Task newTask = taskService.createTask(slug, sprintId, task);
+        if (newTask == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(newTask, HttpStatus.CREATED);
+    }
+
+    @RequestMapping(value = "/{taskId}", method = RequestMethod.PUT)
+    public ResponseEntity<Task> updateTask(@PathVariable String slug, @PathVariable Long sprintId, @PathVariable Long taskId, @RequestBody Task task) {
+        Task newTask = taskService.updateTask(slug, sprintId, taskId, task);
+        if (newTask == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(newTask, HttpStatus.CREATED);
     }
 
 }

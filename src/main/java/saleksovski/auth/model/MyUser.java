@@ -165,6 +165,9 @@ public class MyUser extends SocialUser {
 
         public Builder firstName(String firstName) {
             this.firstName = firstName;
+            if (this.firstName == null) {
+                this.firstName = "";
+            }
             return this;
         }
 
@@ -175,6 +178,9 @@ public class MyUser extends SocialUser {
 
         public Builder lastName(String lastName) {
             this.lastName = lastName;
+            if (this.lastName == null) {
+                this.lastName = "";
+            }
             return this;
         }
 

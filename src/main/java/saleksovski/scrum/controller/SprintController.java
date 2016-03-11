@@ -22,21 +22,28 @@ public class SprintController {
     @RequestMapping
     public ResponseEntity<Set<Sprint>> index(@PathVariable String slug) {
         Set<Sprint> sprints = sprintService.findByBoardSlug(slug);
-        if (sprints != null) {
-            return new ResponseEntity<>(sprints, HttpStatus.OK);
+        if (sprints == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(sprints, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/{sprintId}")
+    public ResponseEntity<Sprint> getSprint(@PathVariable String slug, @PathVariable Long sprintId) {
+        Sprint sprint = sprintService.findByBoardSlugSprintId(slug, sprintId);
+        if (sprint == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(sprint, HttpStatus.OK);
     }
 
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<Sprint> createSprint(@PathVariable String slug, @RequestBody Sprint sprint) {
         Sprint newSprint = sprintService.createSprint(slug, sprint);
+        if (newSprint == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
         return new ResponseEntity<>(newSprint, HttpStatus.CREATED);
-    }
-
-    @RequestMapping(value = "/{sprintId}")
-    public ResponseEntity<Sprint> getSprint(@PathVariable String slug, @PathVariable Long sprintId) {
-        return new ResponseEntity<>(sprintService.findById(sprintId), HttpStatus.OK);
     }
 
 }
