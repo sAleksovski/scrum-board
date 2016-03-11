@@ -19,8 +19,8 @@ import java.util.Properties;
  */
 @Configuration
 @EnableJpaRepositories(basePackages = {
-        "saleksovski",
-        "saleksovski.auth"
+        "saleksovski.auth",
+        "saleksovski.scrum"
 })
 @EnableTransactionManagement
 public class PersistenceContext {
@@ -54,8 +54,8 @@ public class PersistenceContext {
         entityManagerFactoryBean.setDataSource(dataSource());
         entityManagerFactoryBean.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
         entityManagerFactoryBean.setPackagesToScan(
-                "saleksovski.scrum.model",
-                "saleksovski.scrum.auth.model"
+                "saleksovski.auth.model",
+                "saleksovski.scrum.model"
         );
 
         Properties jpaProperties = new Properties();

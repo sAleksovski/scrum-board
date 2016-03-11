@@ -13,8 +13,8 @@ import org.springframework.web.servlet.view.JstlView;
  */
 @Configuration
 @ComponentScan(basePackages = {
-        "saleksovski.scrum.controller",
-        "saleksovski.scrum.auth.controller"
+        "saleksovski.auth",
+        "saleksovski.scrum"
 })
 @EnableWebMvc
 public class WebAppContext extends WebMvcConfigurerAdapter {

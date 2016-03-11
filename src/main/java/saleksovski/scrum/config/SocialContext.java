@@ -66,12 +66,6 @@ public class SocialContext implements SocialConfigurer {
         );
     }
 
-//    @Bean
-//    public UsersConnectionRepository usersConnectionRepository() {
-//        return new JdbcUsersConnectionRepository(dataSource, connectionFactoryLocator(),
-//                Encryptors.noOpText());
-//    }
-
     @Bean
     public ConnectController connectController(ConnectionFactoryLocator connectionFactoryLocator, ConnectionRepository connectionRepository) {
         return new ConnectController(connectionFactoryLocator, connectionRepository);
