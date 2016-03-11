@@ -1,4 +1,4 @@
-package saleksovski.scrum.auth;
+package saleksovski.auth;
 
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -9,10 +9,10 @@ import org.springframework.social.connect.UsersConnectionRepository;
 import org.springframework.social.facebook.api.Facebook;
 import org.springframework.social.google.api.Google;
 import org.springframework.social.twitter.api.Twitter;
-import saleksovski.scrum.auth.enums.SocialMediaService;
-import saleksovski.scrum.auth.exception.UserNotAuthenticated;
-import saleksovski.scrum.auth.model.MyUser;
-import saleksovski.scrum.auth.repository.UserRepository;
+import saleksovski.auth.model.enums.SocialMediaService;
+import saleksovski.auth.exception.UserNotAuthenticated;
+import saleksovski.auth.model.MyUser;
+import saleksovski.auth.repository.UserRepository;
 
 /**
  * Created by stefan on 1/21/16.

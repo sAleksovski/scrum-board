@@ -1,11 +1,11 @@
-package saleksovski.scrum.auth.model;
+package saleksovski.auth.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.social.security.SocialUser;
-import saleksovski.scrum.auth.enums.SocialMediaService;
-import saleksovski.scrum.auth.enums.Role;
+import saleksovski.auth.model.enums.SocialMediaService;
+import saleksovski.auth.model.enums.Role;
 
 import javax.persistence.*;
 import java.util.Collection;

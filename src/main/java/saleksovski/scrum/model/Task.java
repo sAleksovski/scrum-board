@@ -1,7 +1,7 @@
 package saleksovski.scrum.model;
 
-import saleksovski.scrum.auth.model.MyUser;
-import saleksovski.scrum.enums.TaskProgress;
+import saleksovski.auth.model.MyUser;
+import saleksovski.scrum.model.enums.TaskProgress;
 
 import javax.persistence.*;
 

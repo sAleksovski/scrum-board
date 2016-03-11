@@ -1,4 +1,4 @@
-package saleksovski.scrum.enums;
+package saleksovski.scrum.model.enums;
 
 /**
  * Created by stefan on 2/20/16.

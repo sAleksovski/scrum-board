@@ -2,16 +2,16 @@ package saleksovski.scrum.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import saleksovski.scrum.auth.SecurityUtil;
-import saleksovski.scrum.auth.exception.UserNotAuthenticated;
-import saleksovski.scrum.auth.model.MyUser;
-import saleksovski.scrum.auth.repository.UserRepository;
-import saleksovski.scrum.enums.UserRole;
+import saleksovski.auth.SecurityUtil;
+import saleksovski.auth.exception.UserNotAuthenticated;
+import saleksovski.auth.model.MyUser;
+import saleksovski.auth.repository.UserRepository;
+import saleksovski.scrum.model.enums.UserRole;
 import saleksovski.scrum.model.Board;
 import saleksovski.scrum.model.BoardUserRole;
 import saleksovski.scrum.repository.BoardRepository;
 import saleksovski.scrum.repository.BoardUserRoleRepository;
-import saleksovski.scrum.utils.StringUtils;
+import saleksovski.scrum.service.utils.StringUtils;
 
 import java.util.List;
 

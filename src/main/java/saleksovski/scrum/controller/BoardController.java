@@ -4,10 +4,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import saleksovski.scrum.auth.SecurityUtil;
-import saleksovski.scrum.auth.exception.UserNotAuthenticated;
-import saleksovski.scrum.auth.model.MyUser;
-import saleksovski.scrum.enums.UserRole;
+import saleksovski.auth.SecurityUtil;
+import saleksovski.auth.exception.UserNotAuthenticated;
+import saleksovski.auth.model.MyUser;
+import saleksovski.scrum.model.enums.UserRole;
 import saleksovski.scrum.model.Board;
 import saleksovski.scrum.service.BoardService;
 

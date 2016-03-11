@@ -1,4 +1,4 @@
-package saleksovski.scrum.auth.controller;
+package saleksovski.auth.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.social.connect.Connection;
@@ -8,9 +8,9 @@ import org.springframework.social.connect.web.ProviderSignInUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.context.request.WebRequest;
-import saleksovski.scrum.auth.SecurityUtil;
-import saleksovski.scrum.auth.model.MyUser;
-import saleksovski.scrum.auth.service.UserService;
+import saleksovski.auth.SecurityUtil;
+import saleksovski.auth.model.MyUser;
+import saleksovski.auth.service.UserService;
 
 /**
  * Created by stefan on 1/14/16.

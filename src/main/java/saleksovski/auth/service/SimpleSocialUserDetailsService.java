@@ -1,4 +1,4 @@
-package saleksovski.scrum.auth.service;
+package saleksovski.auth.service;
 
 import org.springframework.dao.DataAccessException;
 import org.springframework.security.core.userdetails.UserDetails;

@@ -1,7 +1,7 @@
 package saleksovski.scrum.repository;
 
 import org.springframework.data.repository.CrudRepository;
-import saleksovski.scrum.auth.model.MyUser;
+import saleksovski.auth.model.MyUser;
 import saleksovski.scrum.model.Board;
 
 import java.util.List;

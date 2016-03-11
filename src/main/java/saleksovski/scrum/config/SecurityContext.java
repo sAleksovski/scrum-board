@@ -13,9 +13,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.social.security.SocialUserDetailsService;
 import org.springframework.social.security.SpringSocialConfigurer;
-import saleksovski.scrum.auth.repository.UserRepository;
-import saleksovski.scrum.auth.service.RepositoryUserDetailsService;
-import saleksovski.scrum.auth.service.SimpleSocialUserDetailsService;
+import saleksovski.auth.repository.UserRepository;
+import saleksovski.auth.service.RepositoryUserDetailsService;
+import saleksovski.auth.service.SimpleSocialUserDetailsService;
 
 /**
  * Created by stefan on 1/14/16.

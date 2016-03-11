@@ -1,4 +1,4 @@
-package saleksovski.scrum.utils;
+package saleksovski.scrum.service.utils;
 
 import java.security.SecureRandom;
 

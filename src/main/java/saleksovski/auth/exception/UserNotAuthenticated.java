@@ -1,4 +1,4 @@
-package saleksovski.scrum.auth.exception;
+package saleksovski.auth.exception;
 
 /**
  * Created by stefan on 1/25/16.

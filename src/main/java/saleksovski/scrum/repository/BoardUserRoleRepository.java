@@ -1,8 +1,8 @@
 package saleksovski.scrum.repository;
 
 import org.springframework.data.repository.CrudRepository;
-import saleksovski.scrum.auth.model.MyUser;
-import saleksovski.scrum.enums.UserRole;
+import saleksovski.auth.model.MyUser;
+import saleksovski.scrum.model.enums.UserRole;
 import saleksovski.scrum.model.Board;
 import saleksovski.scrum.model.BoardUserRole;
 

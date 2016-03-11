@@ -5,10 +5,10 @@ import org.springframework.social.connect.UsersConnectionRepository;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
-import saleksovski.scrum.auth.SecurityUtil;
-import saleksovski.scrum.auth.exception.UserNotAuthenticated;
-import saleksovski.scrum.auth.model.MyUser;
-import saleksovski.scrum.auth.repository.UserRepository;
+import saleksovski.auth.SecurityUtil;
+import saleksovski.auth.exception.UserNotAuthenticated;
+import saleksovski.auth.model.MyUser;
+import saleksovski.auth.repository.UserRepository;
 
 import java.util.List;
 

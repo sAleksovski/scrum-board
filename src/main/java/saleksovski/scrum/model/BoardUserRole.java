@@ -1,8 +1,8 @@
 package saleksovski.scrum.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import saleksovski.scrum.auth.model.MyUser;
-import saleksovski.scrum.enums.UserRole;
+import saleksovski.auth.model.MyUser;
+import saleksovski.scrum.model.enums.UserRole;
 
 import javax.persistence.*;
 
