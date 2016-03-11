@@ -5,6 +5,7 @@ import org.joda.time.LocalDateTime;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * Created by stefan on 1/14/16.

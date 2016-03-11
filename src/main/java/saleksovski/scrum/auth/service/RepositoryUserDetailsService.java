@@ -3,12 +3,14 @@ package saleksovski.scrum.auth.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Service;
 import saleksovski.scrum.auth.model.MyUser;
 import saleksovski.scrum.auth.repository.UserRepository;
 
 /**
  * Created by stefan on 1/14/16.
  */
+@Service
 public class RepositoryUserDetailsService implements UserDetailsService {
 
     private UserRepository repository;

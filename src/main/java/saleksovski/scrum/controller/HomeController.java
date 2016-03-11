@@ -3,8 +3,6 @@ package saleksovski.scrum.controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.io.IOException;
-
 /**
  * Created by stefan on 1/21/16.
  */
@@ -12,7 +10,7 @@ import java.io.IOException;
 public class HomeController {
 
     @RequestMapping(value = "/")
-    public String index() throws IOException {
+    public String index() {
         return "<script type=\"text/javascript\">window.location = \"http://localhost:8000/\";</script>";
     }
 

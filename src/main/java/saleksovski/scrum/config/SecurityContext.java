@@ -24,7 +24,6 @@ import saleksovski.scrum.auth.service.SimpleSocialUserDetailsService;
 @EnableWebSecurity
 public class SecurityContext extends WebSecurityConfigurerAdapter {
 
-    @SuppressWarnings("SpringJavaAutowiringInspection")
     @Autowired
     private UserRepository userRepository;
 

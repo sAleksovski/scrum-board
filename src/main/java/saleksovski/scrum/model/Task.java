@@ -17,48 +17,43 @@ public class Task extends BaseEntity<Long> {
     private Long id;
 
     @ManyToOne
-    private Board board;
-
-    @Enumerated(EnumType.STRING)
-    @Column(name = "task_progress", length = 20, nullable = false)
-    private TaskProgress taskProgress;
+    private MyUser createdBy;
 
     @ManyToOne
-    private MyUser user;
+    private MyUser assignedTo;
 
     @Column(name = "name", nullable = false)
     private String name;
 
-    @Column(name = "description", length = 2000)
+    @Column(name = "description", length = 5000)
     private String description;
+
+    @ManyToOne
+    private Sprint sprint;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "task_progress", length = 20, nullable = false)
+    private TaskProgress taskProgress;
 
     @Override
     public Long getId() {
         return id;
     }
 
-    public Board getBoard() {
-        return board;
+    public MyUser getCreatedBy() {
+        return createdBy;
     }
 
-    public void setBoard(Board board) {
-        this.board = board;
+    public void setCreatedBy(MyUser createdBy) {
+        this.createdBy = createdBy;
     }
 
-    public TaskProgress getTaskProgress() {
-        return taskProgress;
+    public MyUser getAssignedTo() {
+        return assignedTo;
     }
 
-    public void setTaskProgress(TaskProgress taskProgress) {
-        this.taskProgress = taskProgress;
-    }
-
-    public MyUser getUser() {
-        return user;
-    }
-
-    public void setUser(MyUser user) {
-        this.user = user;
+    public void setAssignedTo(MyUser assignedTo) {
+        this.assignedTo = assignedTo;
     }
 
     public String getName() {
@@ -75,5 +70,21 @@ public class Task extends BaseEntity<Long> {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public Sprint getSprint() {
+        return sprint;
+    }
+
+    public void setSprint(Sprint sprint) {
+        this.sprint = sprint;
+    }
+
+    public TaskProgress getTaskProgress() {
+        return taskProgress;
+    }
+
+    public void setTaskProgress(TaskProgress taskProgress) {
+        this.taskProgress = taskProgress;
     }
 }

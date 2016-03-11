@@ -21,11 +21,11 @@ public class Board extends BaseEntity<Long> {
     @Column(name = "slug", length = 100, nullable = false, unique = true)
     private String slug;
 
-    @OneToMany
-    private Set<Task> tasks = new HashSet<>();
-
     @OneToMany(mappedBy = "board")
     private Set<BoardUserRole> boardUserRole = new HashSet<>();
+
+    @OneToMany(mappedBy = "board")
+    private Set<Sprint> sprints = new HashSet<>();
 
     @Override
     public Long getId() {
@@ -48,19 +48,19 @@ public class Board extends BaseEntity<Long> {
         this.slug = slug;
     }
 
-    public Set<Task> getTasks() {
-        return tasks;
-    }
-
-    public void setTasks(Set<Task> tasks) {
-        this.tasks = tasks;
-    }
-
     public Set<BoardUserRole> getBoardUserRole() {
         return boardUserRole;
     }
 
     public void setBoardUserRole(Set<BoardUserRole> boardUserRole) {
         this.boardUserRole = boardUserRole;
+    }
+
+    public Set<Sprint> getSprints() {
+        return sprints;
+    }
+
+    public void setSprints(Set<Sprint> sprints) {
+        this.sprints = sprints;
     }
 }
