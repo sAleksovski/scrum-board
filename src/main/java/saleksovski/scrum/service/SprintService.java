@@ -7,7 +7,7 @@ import saleksovski.scrum.model.Sprint;
 import saleksovski.scrum.repository.BoardRepository;
 import saleksovski.scrum.repository.SprintRepository;
 
-import java.util.Set;
+import java.util.List;
 
 /**
  * Created by stefan on 2/25/16.
@@ -24,7 +24,7 @@ public class SprintService {
         this.boardRepository = boardRepository;
     }
 
-    public Set<Sprint> findByBoardSlug(String slug) {
+    public List<Sprint> findByBoardSlug(String slug) {
         Board board = boardRepository.findBySlug(slug);
         if (board == null) {
             return null;
