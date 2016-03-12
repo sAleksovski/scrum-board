@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import saleksovski.scrum.model.Sprint;
 import saleksovski.scrum.service.SprintService;
 
-import java.util.Set;
+import java.util.List;
 
 /**
  * Created by stefan on 2/25/16.
@@ -20,8 +20,8 @@ public class SprintController {
     SprintService sprintService;
 
     @RequestMapping
-    public ResponseEntity<Set<Sprint>> index(@PathVariable String slug) {
-        Set<Sprint> sprints = sprintService.findByBoardSlug(slug);
+    public ResponseEntity<List<Sprint>> index(@PathVariable String slug) {
+        List<Sprint> sprints = sprintService.findByBoardSlug(slug);
         if (sprints == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }

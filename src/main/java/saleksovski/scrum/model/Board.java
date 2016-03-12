@@ -1,8 +1,8 @@
 package saleksovski.scrum.model;
 
 import javax.persistence.*;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by stefan on 2/20/16.
@@ -22,10 +22,10 @@ public class Board extends BaseEntity<Long> {
     private String slug;
 
     @OneToMany(mappedBy = "board")
-    private Set<BoardUserRole> boardUserRole = new HashSet<>();
+    private List<BoardUserRole> boardUserRole = new ArrayList<>();
 
     @OneToMany(mappedBy = "board")
-    private Set<Sprint> sprints = new HashSet<>();
+    private List<Sprint> sprints = new ArrayList<>();
 
     @Override
     public Long getId() {
@@ -48,19 +48,19 @@ public class Board extends BaseEntity<Long> {
         this.slug = slug;
     }
 
-    public Set<BoardUserRole> getBoardUserRole() {
+    public List<BoardUserRole> getBoardUserRole() {
         return boardUserRole;
     }
 
-    public void setBoardUserRole(Set<BoardUserRole> boardUserRole) {
+    public void setBoardUserRole(List<BoardUserRole> boardUserRole) {
         this.boardUserRole = boardUserRole;
     }
 
-    public Set<Sprint> getSprints() {
+    public List<Sprint> getSprints() {
         return sprints;
     }
 
-    public void setSprints(Set<Sprint> sprints) {
+    public void setSprints(List<Sprint> sprints) {
         this.sprints = sprints;
     }
 }

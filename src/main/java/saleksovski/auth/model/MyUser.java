@@ -8,9 +8,9 @@ import saleksovski.auth.model.enums.SocialMediaService;
 import saleksovski.auth.model.enums.Role;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
 
 /**
  * Created by stefan on 1/13/16.
@@ -48,7 +48,7 @@ public class MyUser extends SocialUser {
     private String imageUrl;
 
     public MyUser() {
-        super("username", "password", new HashSet<>());
+        super("username", "password", new ArrayList<>());
     }
 
     public MyUser(String username, String password, Collection<? extends GrantedAuthority> authorities) {
@@ -155,12 +155,12 @@ public class MyUser extends SocialUser {
 
         private SocialMediaService socialSignInProvider;
 
-        private Set<GrantedAuthority> authorities;
+        private List<GrantedAuthority> authorities;
 
         private String imageUrl;
 
         public Builder() {
-            this.authorities = new HashSet<>();
+            this.authorities = new ArrayList<>();
         }
 
         public Builder firstName(String firstName) {

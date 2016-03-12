@@ -5,8 +5,8 @@ import org.hibernate.annotations.Type;
 import org.joda.time.LocalDate;
 
 import javax.persistence.*;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by stefan on 2/25/16.
@@ -33,7 +33,7 @@ public class Sprint extends BaseEntity<Long> {
 
     @OneToMany(mappedBy = "sprint")
     @JsonIgnore
-    private Set<Task> tasks = new HashSet<>();
+    private List<Task> tasks = new ArrayList<>();
 
     @Override
     public Long getId() {
@@ -64,11 +64,11 @@ public class Sprint extends BaseEntity<Long> {
         this.board = board;
     }
 
-    public Set<Task> getTasks() {
+    public List<Task> getTasks() {
         return tasks;
     }
 
-    public void setTasks(Set<Task> tasks) {
+    public void setTasks(List<Task> tasks) {
         this.tasks = tasks;
     }
 }
