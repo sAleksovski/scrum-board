@@ -2,9 +2,13 @@ package saleksovski.scrum.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import saleksovski.auth.model.MyUser;
+import saleksovski.scrum.model.enums.TaskDifficulty;
+import saleksovski.scrum.model.enums.TaskPriority;
 import saleksovski.scrum.model.enums.TaskProgress;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by stefan on 2/20/16.
@@ -34,8 +38,19 @@ public class Task extends BaseEntity<Long> {
     private Sprint sprint;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "task_progress", length = 20, nullable = false)
-    private TaskProgress taskProgress;
+    @Column(name = "progress", length = 20, nullable = false)
+    private TaskProgress progress;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "difficulty", length = 5)
+    private TaskDifficulty difficulty;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "priority", length = 10)
+    private TaskPriority priority;
+
+    @OneToMany(mappedBy = "task")
+    private List<Comment> comments = new ArrayList<>();
 
     @Override
     public Long getId() {
@@ -82,11 +97,35 @@ public class Task extends BaseEntity<Long> {
         this.sprint = sprint;
     }
 
-    public TaskProgress getTaskProgress() {
-        return taskProgress;
+    public TaskProgress getProgress() {
+        return progress;
     }
 
-    public void setTaskProgress(TaskProgress taskProgress) {
-        this.taskProgress = taskProgress;
+    public void setProgress(TaskProgress progress) {
+        this.progress = progress;
+    }
+
+    public TaskDifficulty getDifficulty() {
+        return difficulty;
+    }
+
+    public void setDifficulty(TaskDifficulty difficulty) {
+        this.difficulty = difficulty;
+    }
+
+    public TaskPriority getPriority() {
+        return priority;
+    }
+
+    public void setPriority(TaskPriority priority) {
+        this.priority = priority;
+    }
+
+    public List<Comment> getComments() {
+        return comments;
+    }
+
+    public void setComments(List<Comment> comments) {
+        this.comments = comments;
     }
 }

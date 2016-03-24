@@ -19,6 +19,9 @@ public class Sprint extends BaseEntity<Long> {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @Column(name = "name", nullable = false)
+    private String name;
+
     @Column(name = "from_date", nullable = false)
     @Type(type = "org.jadira.usertype.dateandtime.joda.PersistentLocalDate")
     private LocalDate fromDate;
@@ -38,6 +41,14 @@ public class Sprint extends BaseEntity<Long> {
     @Override
     public Long getId() {
         return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public LocalDate getFromDate() {

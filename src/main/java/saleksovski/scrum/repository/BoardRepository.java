@@ -13,6 +13,5 @@ public interface BoardRepository extends CrudRepository<Board, Long> {
 
     Board findBySlug(String slug);
 
-//    @Query("select b from Board b join b.users id where ?1 in (VALUE(id))")
     List<Board> findByBoardUserRoleUser(MyUser user);
 }
