@@ -52,6 +52,9 @@ public class Task extends BaseEntity<Long> {
     @OneToMany(mappedBy = "task")
     private List<Comment> comments = new ArrayList<>();
 
+    @Column(name = "position")
+    private double position;
+
     @Override
     public Long getId() {
         return id;
@@ -127,5 +130,13 @@ public class Task extends BaseEntity<Long> {
 
     public void setComments(List<Comment> comments) {
         this.comments = comments;
+    }
+
+    public double getPosition() {
+        return position;
+    }
+
+    public void setPosition(double position) {
+        this.position = position;
     }
 }

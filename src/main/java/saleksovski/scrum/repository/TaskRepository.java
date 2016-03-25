@@ -12,4 +12,6 @@ import java.util.List;
 public interface TaskRepository extends CrudRepository<Task, Long> {
 
     List<Task> findBySprint(Sprint sprint);
+
+    List<Task> findBySprintOrderByPosition(Sprint sprint);
 }

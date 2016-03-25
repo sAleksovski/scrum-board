@@ -36,7 +36,7 @@ public class TaskService {
         if (!sprint.getBoard().getSlug().equals(slug)) {
             return null;
         }
-        return taskRepository.findBySprint(sprint);
+        return taskRepository.findBySprintOrderByPosition(sprint);
     }
 
     public Task createTask(String slug, Long sprintId, Task task) {
@@ -64,6 +64,9 @@ public class TaskService {
                 task.setAssignedTo(user);
             }
         }
+        task.setPosition(0f);
+        task = taskRepository.save(task);
+        task.setPosition(2f * task.getId());
         return taskRepository.save(task);
     }
 
@@ -83,6 +86,7 @@ public class TaskService {
         }
         oldTask.setDescription(task.getDescription());
         oldTask.setProgress(task.getProgress());
+        oldTask.setPosition(task.getPosition());
         return taskRepository.save(oldTask);
     }
 }
