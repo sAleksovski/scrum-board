@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import saleksovski.scrum.model.Comment;
 import saleksovski.scrum.model.Task;
 import saleksovski.scrum.service.TaskService;
 
@@ -44,6 +45,15 @@ public class TaskController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(newTask, HttpStatus.CREATED);
+    }
+
+    @RequestMapping(value = "/{taskId}/comments", method = RequestMethod.POST)
+    public ResponseEntity<Comment> addComment(@PathVariable String slug, @PathVariable Long sprintId, @PathVariable Long taskId, @RequestBody String comment) {
+        Comment newComment = taskService.addComment(slug, sprintId, taskId, comment);
+        if (newComment == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(newComment, HttpStatus.CREATED);
     }
 
 }
