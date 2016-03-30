@@ -3,7 +3,7 @@
 Scrum board is a web application consisting of two parts:
 
  - Spring Boot backend (this)
- - [AngularJS powered HTML5 frontend](https://github.com/sAleksovski/scrub-board-frontend)
+ - [AngularJS powered HTML5 frontend](https://github.com/sAleksovski/scrum-board-frontend)
 
 You can login with Facebook, Twitter and Google+.
 
