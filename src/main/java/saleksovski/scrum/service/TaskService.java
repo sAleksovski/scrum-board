@@ -43,6 +43,18 @@ public class TaskService {
         return taskRepository.findBySprintOrderByPosition(sprint);
     }
 
+    public Task findOne(String slug, Long sprintId, Long taskId) {
+        Task task = taskRepository.findOne(taskId);
+        if (task == null) {
+            return null;
+        }
+        if (!Objects.equals(task.getSprint().getId(), sprintId)
+                || ! task.getSprint().getBoard().getSlug().equals(slug)) {
+            return null;
+        }
+        return task;
+    }
+
     public Task createTask(String slug, Long sprintId, Task task) {
         Sprint sprint = sprintRepository.findOne(sprintId);
 

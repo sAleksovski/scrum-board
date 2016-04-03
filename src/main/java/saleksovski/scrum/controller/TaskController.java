@@ -29,6 +29,15 @@ public class TaskController {
         return new ResponseEntity<>(tasks, HttpStatus.OK);
     }
 
+    @RequestMapping(value = "/{taskId}")
+    public ResponseEntity<Task> getTask(@PathVariable String slug, @PathVariable Long sprintId, @PathVariable Long taskId) {
+        Task task = taskService.findOne(slug, sprintId, taskId);
+        if (task == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(task, HttpStatus.OK);
+    }
+
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<Task> createTask(@PathVariable String slug, @PathVariable Long sprintId, @RequestBody Task task) {
         Task newTask = taskService.createTask(slug, sprintId, task);
