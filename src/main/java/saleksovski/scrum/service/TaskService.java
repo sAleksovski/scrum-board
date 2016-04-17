@@ -120,8 +120,7 @@ public class TaskService {
         comment.setTask(oldTask);
         MyUser user;
         try {
-            String username = SecurityUtil.getUserDetails().getUsername();
-            user = userRepository.findByEmail(username);
+            user = SecurityUtil.getUserDetails();
         } catch (UserNotAuthenticated userNotAuthenticated) {
             userNotAuthenticated.printStackTrace();
             return null;

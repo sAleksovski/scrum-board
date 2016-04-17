@@ -1,23 +1,26 @@
 package saleksovski.auth;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.social.connect.Connection;
-import org.springframework.social.connect.ConnectionRepository;
-import org.springframework.social.connect.UsersConnectionRepository;
-import org.springframework.social.facebook.api.Facebook;
-import org.springframework.social.google.api.Google;
-import org.springframework.social.twitter.api.Twitter;
-import saleksovski.auth.model.enums.SocialMediaService;
+import org.springframework.stereotype.Component;
 import saleksovski.auth.exception.UserNotAuthenticated;
 import saleksovski.auth.model.MyUser;
 import saleksovski.auth.repository.UserRepository;
 
+import javax.annotation.PostConstruct;
+
 /**
  * Created by stefan on 1/21/16.
  */
+@Component
 public class SecurityUtil {
+
+    private static UserRepository userRepository;
+
+    @Autowired
+    private UserRepository ur;
 
     public static void logInUser(MyUser user) {
         MyUser userDetails = MyUser.getBuilder()
@@ -39,27 +42,18 @@ public class SecurityUtil {
     public static MyUser getUserDetails() throws UserNotAuthenticated {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if (principal instanceof MyUser) {
-            return (MyUser) principal;
+            MyUser user = (MyUser) principal;
+
+            String userId = user.getUserId();
+            return userRepository.findByEmail(userId);
         } else {
             throw new UserNotAuthenticated();
         }
     }
 
-    public static Connection getUserConnection(UserRepository userRepository, UsersConnectionRepository usersConnectionRepository, String userId) {
-        ConnectionRepository repository = usersConnectionRepository.createConnectionRepository(userId);
-
-        Connection connection = null;
-
-        MyUser u = userRepository.findByEmail(userId);
-
-        if (u.getSocialSignInProvider() == SocialMediaService.FACEBOOK) {
-            connection = repository.findPrimaryConnection(Facebook.class);
-        } else if (u.getSocialSignInProvider() == SocialMediaService.GOOGLE) {
-            connection = repository.findPrimaryConnection(Google.class);
-        } else if (u.getSocialSignInProvider() == SocialMediaService.TWITTER) {
-            connection = repository.findPrimaryConnection(Twitter.class);
-        }
-
-        return connection;
+    @PostConstruct
+    public void init() {
+        userRepository = ur;
     }
+
 }

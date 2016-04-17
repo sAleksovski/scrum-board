@@ -66,7 +66,7 @@ public class BoardService {
         return boardRepository.save(myBoard);
     }
 
-    public Board addUserToBoard(String slug, MyUser user, UserRole userRole) {
+    public List<BoardUserRole> addUserToBoard(String slug, MyUser user, UserRole userRole) throws UserNotAuthenticated {
         Board myBoard = boardRepository.findBySlug(slug);
         MyUser myUser = userRepository.findByEmail(user.getEmail());
         if (myBoard == null
@@ -74,15 +74,45 @@ public class BoardService {
                 || userRole == null) {
             return null;
         }
-        BoardUserRole boardUserRole = boardUserRoleRepository.findByBoardAndUserAndRole(myBoard, myUser, userRole);
+
+        MyUser me = SecurityUtil.getUserDetails();
+        for (BoardUserRole bur :
+                myBoard.getBoardUserRole()) {
+
+            if (me.getId() == bur.getUser().getId() && bur.getRole() == UserRole.ROLE_USER) {
+                return myBoard.getBoardUserRole();
+            }
+        }
+
+        BoardUserRole boardUserRole = boardUserRoleRepository.findByBoardAndUser(myBoard, myUser);
         if (boardUserRole == null) {
             boardUserRole = new BoardUserRole();
             boardUserRole.setBoard(myBoard);
             boardUserRole.setUser(myUser);
-            boardUserRole.setRole(userRole);
-            boardUserRoleRepository.save(boardUserRole);
         }
-        return myBoard;
+
+        boolean adminToUser = false;
+        int admins = 0;
+
+        for (BoardUserRole bur :
+                myBoard.getBoardUserRole()) {
+
+            if (bur.getRole() == UserRole.ROLE_ADMIN && bur.getUser().getId() == myUser.getId()) {
+                adminToUser = true;
+            }
+            if (bur.getRole() == UserRole.ROLE_ADMIN) {
+                admins++;
+            }
+        }
+
+        if (admins == 0 || (admins == 1 && adminToUser)) {
+            boardUserRole.setRole(UserRole.ROLE_ADMIN);
+        } else {
+            boardUserRole.setRole(userRole);
+        }
+
+        boardUserRoleRepository.save(boardUserRole);
+        return myBoard.getBoardUserRole();
     }
 
 }

@@ -29,27 +29,6 @@ public class WebAppContext extends WebMvcConfigurerAdapter {
         configurer.enable();
     }
 
-//    @Bean
-//    public SimpleMappingExceptionResolver exceptionResolver() {
-//        SimpleMappingExceptionResolver exceptionResolver = new SimpleMappingExceptionResolver();
-//
-//        Properties exceptionMappings = new Properties();
-//
-//        exceptionMappings.put("java.lang.Exception", "error/error");
-//        exceptionMappings.put("java.lang.RuntimeException", "error/error");
-//
-//        exceptionResolver.setExceptionMappings(exceptionMappings);
-//
-//        Properties statusCodes = new Properties();
-//
-//        statusCodes.put("error/404", "404");
-//        statusCodes.put("error/error", "500");
-//
-//        exceptionResolver.setStatusCodes(statusCodes);
-//
-//        return exceptionResolver;
-//    }
-
     @Bean
     public ViewResolver viewResolver() {
         InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();

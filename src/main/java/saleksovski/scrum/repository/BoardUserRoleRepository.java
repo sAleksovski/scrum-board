@@ -11,5 +11,5 @@ import saleksovski.scrum.model.BoardUserRole;
  */
 public interface BoardUserRoleRepository extends CrudRepository<BoardUserRole, Long> {
 
-    BoardUserRole findByBoardAndUserAndRole(Board board, MyUser user, UserRole role);
+    BoardUserRole findByBoardAndUser(Board board, MyUser user);
 }

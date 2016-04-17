@@ -7,9 +7,12 @@ import org.springframework.web.bind.annotation.*;
 import saleksovski.auth.SecurityUtil;
 import saleksovski.auth.exception.UserNotAuthenticated;
 import saleksovski.auth.model.MyUser;
-import saleksovski.scrum.model.enums.UserRole;
 import saleksovski.scrum.model.Board;
+import saleksovski.scrum.model.BoardUserRole;
+import saleksovski.scrum.model.enums.UserRole;
 import saleksovski.scrum.service.BoardService;
+
+import java.util.List;
 
 /**
  * Created by stefan on 2/20/16.
@@ -24,13 +27,8 @@ public class BoardController {
     @RequestMapping(method = RequestMethod.GET)
     public
     @ResponseBody
-    ResponseEntity<Iterable<Board>> boards() {
-        try {
-            return new ResponseEntity<>(boardService.findByUser(SecurityUtil.getUserDetails()), HttpStatus.OK);
-        } catch (UserNotAuthenticated userNotAuthenticated) {
-            userNotAuthenticated.printStackTrace();
-            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
-        }
+    ResponseEntity<Iterable<Board>> boards() throws UserNotAuthenticated {
+        return new ResponseEntity<>(boardService.findByUser(SecurityUtil.getUserDetails()), HttpStatus.OK);
     }
 
     @RequestMapping(value = "/{slug}", method = RequestMethod.GET)
@@ -69,8 +67,15 @@ public class BoardController {
     @RequestMapping(value = "/{slug}/users", method = RequestMethod.POST)
     public
     @ResponseBody
-    ResponseEntity<Board> editBoard(@PathVariable String slug, @RequestBody MyUser user) {
+    ResponseEntity<List<BoardUserRole>> addUserToBoard(@PathVariable String slug, @RequestBody MyUser user) {
         return new ResponseEntity<>(boardService.addUserToBoard(slug, user, UserRole.ROLE_USER), HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/{slug}/users", method = RequestMethod.PUT)
+    public
+    @ResponseBody
+    ResponseEntity<List<BoardUserRole>> editUserInBoard(@PathVariable String slug, @RequestBody BoardUserRole boardUserRole) {
+        return new ResponseEntity<>(boardService.addUserToBoard(slug, boardUserRole.getUser(), boardUserRole.getRole()), HttpStatus.OK);
     }
 
 }

@@ -4,8 +4,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.social.security.SocialUser;
-import saleksovski.auth.model.enums.SocialMediaService;
 import saleksovski.auth.model.enums.Role;
+import saleksovski.auth.model.enums.SocialMediaService;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -23,7 +23,7 @@ public class MyUser extends SocialUser {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Column(name = "first_name", length = 100,nullable = false)
+    @Column(name = "first_name", length = 100, nullable = false)
     private String firstName;
 
     @Column(name = "last_name", length = 100, nullable = false)
@@ -122,6 +122,11 @@ public class MyUser extends SocialUser {
 
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
+    }
+
+    @Override
+    public int hashCode() {
+        return Integer.parseInt(id.toString());
     }
 
     @Override
