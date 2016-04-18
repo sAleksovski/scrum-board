@@ -11,6 +11,7 @@ import org.springframework.web.context.request.WebRequest;
 import saleksovski.auth.SecurityUtil;
 import saleksovski.auth.model.MyUser;
 import saleksovski.auth.service.UserService;
+import saleksovski.scrum.config.WebAppContext;
 
 /**
  * Created by stefan on 1/14/16.
@@ -37,7 +38,7 @@ public class SignUpController {
             SecurityUtil.logInUser(registered);
             providerSignInUtils.doPostSignUp(registered.getEmail(), request);
         }
-        return "redirect:http://localhost:8000/";
+        return "redirect:" + WebAppContext.getFrontendUrl();
     }
 
     private MyUser createUserAccount(Connection<?> connection) {

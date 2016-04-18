@@ -1,14 +1,22 @@
-db:
-  url: jdbc:mysql://localhost:3306/scrum?useUnicode=true&characterEncoding=UTF-8
-  username: scrum
-  password: scrum
-  driver: com.mysql.jdbc.Driver
+spring:
+  application:
+    name: Scrum Board
 
-hibernate:
-  dialect: org.hibernate.dialect.MySQL5InnoDBDialect
-  format_sql: true
-  hbm2ddl:
-    auto: update
-  ejb:
-    naming_strategy: org.hibernate.cfg.ImprovedNamingStrategy
-  show_sql: false
+  datasource:
+    url: ${SCRUM_DB_URL}
+    username: ${SCRUM_DB_USER}
+    password: ${SCRUM_DB_PASS}
+    driverClassName: ${SCRUM_DB_DRIVER}
+    maxActive: 10
+    maxIdle: 5
+    minIdle: 2
+    initialSize: 5
+    removeAbandoned: true
+  jpa:
+    hibernate:
+      ddl-auto: update
+      naming-strategy: org.hibernate.cfg.ImprovedNamingStrategy
+    show-sql: true
+
+app:
+  frontendUrl: ${SCRUM_FRONTEND_URL}

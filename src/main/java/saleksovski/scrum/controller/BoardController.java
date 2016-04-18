@@ -67,14 +67,14 @@ public class BoardController {
     @RequestMapping(value = "/{slug}/users", method = RequestMethod.POST)
     public
     @ResponseBody
-    ResponseEntity<List<BoardUserRole>> addUserToBoard(@PathVariable String slug, @RequestBody MyUser user) {
+    ResponseEntity<List<BoardUserRole>> addUserToBoard(@PathVariable String slug, @RequestBody MyUser user) throws UserNotAuthenticated {
         return new ResponseEntity<>(boardService.addUserToBoard(slug, user, UserRole.ROLE_USER), HttpStatus.OK);
     }
 
     @RequestMapping(value = "/{slug}/users", method = RequestMethod.PUT)
     public
     @ResponseBody
-    ResponseEntity<List<BoardUserRole>> editUserInBoard(@PathVariable String slug, @RequestBody BoardUserRole boardUserRole) {
+    ResponseEntity<List<BoardUserRole>> editUserInBoard(@PathVariable String slug, @RequestBody BoardUserRole boardUserRole) throws UserNotAuthenticated {
         return new ResponseEntity<>(boardService.addUserToBoard(slug, boardUserRole.getUser(), boardUserRole.getRole()), HttpStatus.OK);
     }
 
