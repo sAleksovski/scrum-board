@@ -97,7 +97,7 @@ public class BoardService {
         for (BoardUserRole bur :
                 myBoard.getBoardUserRole()) {
 
-            if (bur.getRole() == UserRole.ROLE_ADMIN && bur.getUser().getId() == myUser.getId()) {
+            if (bur.getRole() == UserRole.ROLE_ADMIN && bur.getUser().getId() == myUser.getId() && userRole == UserRole.ROLE_USER) {
                 adminToUser = true;
             }
             if (bur.getRole() == UserRole.ROLE_ADMIN) {

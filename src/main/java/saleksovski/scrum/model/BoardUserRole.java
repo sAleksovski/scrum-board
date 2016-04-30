@@ -22,6 +22,7 @@ public class BoardUserRole extends BaseEntity<Long> {
     private Board board;
 
     @ManyToOne
+    @JoinColumn(name = "bUser")
     private MyUser user;
 
     @Enumerated(EnumType.STRING)

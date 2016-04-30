@@ -7,6 +7,7 @@ spring:
     username: ${SCRUM_DB_USER}
     password: ${SCRUM_DB_PASS}
     driverClassName: ${SCRUM_DB_DRIVER}
+    platform: ${DB_PLATFORM} # mysql or postgresql
     maxActive: 10
     maxIdle: 5
     minIdle: 2
@@ -17,6 +18,7 @@ spring:
       ddl-auto: update
       naming-strategy: org.hibernate.cfg.ImprovedNamingStrategy
     show-sql: true
+    database-platform: ${DB_DIALECT}
 
 app:
   frontendUrl: ${SCRUM_FRONTEND_URL}
