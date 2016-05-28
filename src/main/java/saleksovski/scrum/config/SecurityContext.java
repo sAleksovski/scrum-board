@@ -55,11 +55,14 @@ public class SecurityContext extends WebSecurityConfigurerAdapter {
                         "/auth/logout",
                         "/signup/**",
                         "/signin",
-                        "/user/register/**"
+                        "/user/register/**",
+                        "/api/ws/**"
                 ).permitAll()
                 //The rest of the our application is protected.
                 .antMatchers("/**").hasRole("USER")
                 //Adds the SocialAuthenticationFilter to Spring Security's filter chain.
+                .and()
+                .headers().frameOptions().sameOrigin()
                 .and()
                 .csrf().disable()
                 .apply(new SpringSocialConfigurer());

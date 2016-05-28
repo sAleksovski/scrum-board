@@ -17,6 +17,12 @@ import saleksovski.scrum.repository.CommentRepository;
 import saleksovski.scrum.service.BoardService;
 import saleksovski.scrum.service.SprintService;
 import saleksovski.scrum.service.TaskService;
+import saleksovski.scrum.service.WebSocketService;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by stefan on 3/12/16.
@@ -35,6 +41,26 @@ public class InitController {
 
     @Autowired
     CommentRepository commentRepository;
+
+    @Autowired
+    WebSocketService webSocketService;
+
+    @RequestMapping("/api/ws")
+    public String ws() throws UserNotAuthenticated {
+        MyUser user = SecurityUtil.getUserDetails();
+
+        Map<String, String> map = new HashMap<>();
+        map.put("read", "true");
+        map.put("content", "Hello World");
+        webSocketService.sendNotification(user.getEmail(), map);
+
+        map = new HashMap<>();
+        map.put("read", "false");
+        map.put("content", "Unread message");
+        webSocketService.sendNotification(user.getEmail(), map);
+
+        return user.getEmail();
+    }
 
     @RequestMapping("/api/init")
     public String init() throws UserNotAuthenticated {
