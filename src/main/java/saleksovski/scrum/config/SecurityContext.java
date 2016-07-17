@@ -65,7 +65,14 @@ public class SecurityContext extends WebSecurityConfigurerAdapter {
                 .headers().frameOptions().sameOrigin()
                 .and()
                 .csrf().disable()
-                .apply(new SpringSocialConfigurer());
+                .apply(getSprintSocialConfigurer());
+    }
+
+    private SpringSocialConfigurer getSprintSocialConfigurer() {
+        SpringSocialConfigurer ssc = new SpringSocialConfigurer();
+        ssc.alwaysUsePostLoginUrl(true);
+        ssc.postLoginUrl(WebAppContext.getFrontendUrl());
+        return ssc;
     }
 
     @Override
