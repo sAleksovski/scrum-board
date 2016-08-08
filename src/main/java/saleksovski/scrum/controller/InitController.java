@@ -6,22 +6,15 @@ import org.springframework.web.bind.annotation.RestController;
 import saleksovski.auth.SecurityUtil;
 import saleksovski.auth.exception.UserNotAuthenticated;
 import saleksovski.auth.model.MyUser;
-import saleksovski.scrum.model.Board;
-import saleksovski.scrum.model.Comment;
-import saleksovski.scrum.model.Sprint;
-import saleksovski.scrum.model.Task;
+import saleksovski.scrum.model.*;
+import saleksovski.scrum.model.enums.NotificationType;
 import saleksovski.scrum.model.enums.TaskDifficulty;
 import saleksovski.scrum.model.enums.TaskPriority;
 import saleksovski.scrum.model.enums.TaskProgress;
 import saleksovski.scrum.repository.CommentRepository;
-import saleksovski.scrum.service.BoardService;
-import saleksovski.scrum.service.SprintService;
-import saleksovski.scrum.service.TaskService;
-import saleksovski.scrum.service.WebSocketService;
+import saleksovski.scrum.service.*;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -45,6 +38,9 @@ public class InitController {
     @Autowired
     WebSocketService webSocketService;
 
+    @Autowired
+    NotificationService notificationService;
+
     @RequestMapping("/api/ws")
     public String ws() throws UserNotAuthenticated {
         MyUser user = SecurityUtil.getUserDetails();
@@ -60,6 +56,18 @@ public class InitController {
         webSocketService.sendNotification(user.getEmail(), map);
 
         return user.getEmail();
+    }
+
+    @RequestMapping("/api/nf")
+    public Notification nf() throws UserNotAuthenticated {
+        MyUser user = SecurityUtil.getUserDetails();
+
+        MyUser to = new MyUser();
+        to.setId(1L);
+
+        Task task = taskService.findOne("jVZgP8R7", 2L, 7L);
+
+        return notificationService.createNotification(user, to, NotificationType.COMMENTED_ON_TASK, null, null, task);
     }
 
     @RequestMapping("/api/init")

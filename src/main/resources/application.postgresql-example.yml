@@ -3,11 +3,11 @@ spring:
     name: Scrum Board
 
   datasource:
-    url: jdbc:mysql://localhost:3306/scrum?useUnicode=true&characterEncoding=UTF-8
+    url: jdbc:postgresql://localhost:5432/database
     username: scrum
     password: scrum
-    driverClassName: com.mysql.jdbc.Driver
-    platform: mysql
+    driverClassName: org.postgresql.Driver
+    platform: postgresql
 
     max-idle: 50
     suspect-timeout: 60
@@ -21,7 +21,7 @@ spring:
       ddl-auto: update
       naming-strategy: org.hibernate.cfg.ImprovedNamingStrategy
     show-sql: true
-    database-platform: org.hibernate.dialect.MySQLDialect
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
 
 app:
-  frontendUrl: http://localhost:8000
+  frontendUrl: http://localhost:8080

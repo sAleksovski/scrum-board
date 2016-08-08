@@ -4,9 +4,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import saleksovski.auth.SecurityUtil;
+import saleksovski.auth.exception.UserNotAuthenticated;
 import saleksovski.scrum.model.Comment;
+import saleksovski.scrum.model.Notification;
 import saleksovski.scrum.model.Task;
+import saleksovski.scrum.model.enums.NotificationType;
+import saleksovski.scrum.service.NotificationService;
 import saleksovski.scrum.service.TaskService;
+import saleksovski.scrum.service.WebSocketService;
 
 import java.util.List;
 
@@ -19,6 +25,12 @@ public class TaskController {
 
     @Autowired
     private TaskService taskService;
+
+    @Autowired
+    private NotificationService notificationService;
+
+    @Autowired
+    private WebSocketService webSocketService;
 
     @RequestMapping
     public ResponseEntity<List<Task>> index(@PathVariable String slug, @PathVariable Long sprintId) {
@@ -57,11 +69,13 @@ public class TaskController {
     }
 
     @RequestMapping(value = "/{taskId}/comments", method = RequestMethod.POST)
-    public ResponseEntity<Comment> addComment(@PathVariable String slug, @PathVariable Long sprintId, @PathVariable Long taskId, @RequestBody String comment) {
+    public ResponseEntity<Comment> addComment(@PathVariable String slug, @PathVariable Long sprintId, @PathVariable Long taskId, @RequestBody String comment) throws UserNotAuthenticated {
         Comment newComment = taskService.addComment(slug, sprintId, taskId, comment);
         if (newComment == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
+        Notification notification = notificationService.createNotification(SecurityUtil.getUserDetails(), newComment.getTask().getAssignedTo(), NotificationType.COMMENTED_ON_TASK, null, null, newComment.getTask());
+        webSocketService.sendNotification(newComment.getTask().getAssignedTo().getEmail(), notification);
         return new ResponseEntity<>(newComment, HttpStatus.CREATED);
     }
 

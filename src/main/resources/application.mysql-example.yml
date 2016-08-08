@@ -24,4 +24,4 @@ spring:
     database-platform: org.hibernate.dialect.MySQLDialect
 
 app:
-  frontendUrl: http://localhost:8000
+  frontendUrl: http://localhost:8080
