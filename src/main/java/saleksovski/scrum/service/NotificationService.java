@@ -26,15 +26,33 @@ public class NotificationService {
     }
 
     public List<Notification> findByUser(MyUser user) {
-        return notificationRepository.findByUser(user);
+        return notificationRepository.findByUserOrderByIdDesc(user);
     }
 
-    public Notification createNotification(MyUser creator, MyUser user, NotificationType notificationType, Board board, Sprint sprint, Task task) {
-        List<Notification> oldNotifications = notificationRepository.findByUserAndNotificationType(user, notificationType);
+    public Notification createNotification(MyUser creator, MyUser user, NotificationType notificationType, Board board, Sprint sprint, Task task, String url) {
+        if (notificationType == NotificationType.COMMENTED_ON_TASK) {
+            List<Notification> oldNotifications = notificationRepository.findByUserAndNotificationTypeAndTask(user, notificationType, task);
 
-        Notification notification = null;
+            Notification notification;
 
-        if (oldNotifications.size() == 0) {
+            if (oldNotifications.size() == 0) {
+                notification = new Notification();
+                notification.getCreators().add(creator);
+                notification.setUser(user);
+                notification.setNotificationType(notificationType);
+                notification.setUnread(true);
+                notification.setBoard(board);
+                notification.setSprint(sprint);
+                notification.setTask(task);
+                notification.setUrl(url);
+            } else {
+                notification = oldNotifications.get(0);
+                notification.getCreators().add(creator);
+                notification.setUnread(true);
+            }
+            return notificationRepository.save(notification);
+        } else {
+            Notification notification = null;
             notification = new Notification();
             notification.getCreators().add(creator);
             notification.setUser(user);
@@ -43,37 +61,12 @@ public class NotificationService {
             notification.setBoard(board);
             notification.setSprint(sprint);
             notification.setTask(task);
+            notification.setUrl(url);
 
-            return notificationRepository.save(notification);
-        }
-
-        if (oldNotifications.size() > 1) {
-            for (Notification n :
-                    oldNotifications) {
-
-                if (n.getBoard() != null && board != null && n.getBoard().getId() == board.getId()) {
-                    notification = n;
-                }
-
-                if (n.getSprint() != null && sprint != null && n.getSprint().getId() == sprint.getId()) {
-                    notification = n;
-                }
-
-                if (n.getTask() != null && task != null && n.getTask().getId() != null) {
-                    notification = n;
-                }
-            }
-        } else {
-            notification = oldNotifications.get(0);
-        }
-
-        if (notification != null) {
             notification.setUnread(true);
             notification.getCreators().add(user);
             return notificationRepository.save(notification);
         }
-
-        return null;
     }
 
 }

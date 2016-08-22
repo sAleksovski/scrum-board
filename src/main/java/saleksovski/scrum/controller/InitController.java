@@ -67,7 +67,9 @@ public class InitController {
 
         Task task = taskService.findOne("jVZgP8R7", 2L, 7L);
 
-        return notificationService.createNotification(user, to, NotificationType.COMMENTED_ON_TASK, null, null, task);
+        String url = "/b/jVZgP8R7/tasks/2-7";
+
+        return notificationService.createNotification(user, to, NotificationType.COMMENTED_ON_TASK, null, null, task, url);
     }
 
     @RequestMapping("/api/init")

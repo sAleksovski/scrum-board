@@ -51,10 +51,23 @@ public class TaskController {
     }
 
     @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity<Task> createTask(@PathVariable String slug, @PathVariable Long sprintId, @RequestBody Task task) {
+    public ResponseEntity<Task> createTask(@PathVariable String slug, @PathVariable Long sprintId, @RequestBody Task task) throws UserNotAuthenticated {
         Task newTask = taskService.createTask(slug, sprintId, task);
         if (newTask == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        if (newTask.getCreatedBy().getId() != newTask.getAssignedTo().getId()) {
+            String url = "#/b/" + slug + "/tasks/" + sprintId + "-" + newTask.getId();
+            Notification notification = notificationService.createNotification(
+                    SecurityUtil.getUserDetails(),
+                    newTask.getAssignedTo(),
+                    NotificationType.АSSIGNED_TASK,
+                    null,
+                    null,
+                    newTask,
+                    url);
+
+            webSocketService.sendNotification(newTask.getAssignedTo().getEmail(), notification);
         }
         return new ResponseEntity<>(newTask, HttpStatus.CREATED);
     }
@@ -74,7 +87,15 @@ public class TaskController {
         if (newComment == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        Notification notification = notificationService.createNotification(SecurityUtil.getUserDetails(), newComment.getTask().getAssignedTo(), NotificationType.COMMENTED_ON_TASK, null, null, newComment.getTask());
+        String url = "#/b/" + slug + "/tasks/" + sprintId + "-" + taskId;
+        Notification notification = notificationService.createNotification(
+                SecurityUtil.getUserDetails(),
+                newComment.getTask().getAssignedTo(),
+                NotificationType.COMMENTED_ON_TASK,
+                null,
+                null,
+                newComment.getTask(),
+                url);
         webSocketService.sendNotification(newComment.getTask().getAssignedTo().getEmail(), notification);
         return new ResponseEntity<>(newComment, HttpStatus.CREATED);
     }

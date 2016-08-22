@@ -9,8 +9,12 @@ import saleksovski.auth.exception.UserNotAuthenticated;
 import saleksovski.auth.model.MyUser;
 import saleksovski.scrum.model.Board;
 import saleksovski.scrum.model.BoardUserRole;
+import saleksovski.scrum.model.Notification;
+import saleksovski.scrum.model.enums.NotificationType;
 import saleksovski.scrum.model.enums.UserRole;
 import saleksovski.scrum.service.BoardService;
+import saleksovski.scrum.service.NotificationService;
+import saleksovski.scrum.service.WebSocketService;
 
 import java.util.List;
 
@@ -23,6 +27,12 @@ public class BoardController {
 
     @Autowired
     BoardService boardService;
+
+    @Autowired
+    NotificationService notificationService;
+
+    @Autowired
+    WebSocketService webSocketService;
 
     @RequestMapping(method = RequestMethod.GET)
     public
@@ -68,6 +78,15 @@ public class BoardController {
     public
     @ResponseBody
     ResponseEntity<List<BoardUserRole>> addUserToBoard(@PathVariable String slug, @RequestBody MyUser user) throws UserNotAuthenticated {
+        Notification notification = notificationService.createNotification(
+                SecurityUtil.getUserDetails(),
+                user,
+                NotificationType.ADDED_TO_BOARD,
+                boardService.findBySlug(slug),
+                null,
+                null,
+                "#/b/" + slug);
+        webSocketService.sendNotification(user.getEmail(), notification);
         return new ResponseEntity<>(boardService.addUserToBoard(slug, user, UserRole.ROLE_USER), HttpStatus.OK);
     }
 
@@ -75,7 +94,40 @@ public class BoardController {
     public
     @ResponseBody
     ResponseEntity<List<BoardUserRole>> editUserInBoard(@PathVariable String slug, @RequestBody BoardUserRole boardUserRole) throws UserNotAuthenticated {
-        return new ResponseEntity<>(boardService.addUserToBoard(slug, boardUserRole.getUser(), boardUserRole.getRole()), HttpStatus.OK);
+        List<BoardUserRole> newBoardUserRole = boardService.addUserToBoard(slug, boardUserRole.getUser(), boardUserRole.getRole());
+        boolean removed = true;
+        boolean isAdmin = false;
+        for (BoardUserRole bur :
+                newBoardUserRole) {
+            if (bur.getUser().getId() == boardUserRole.getUser().getId()) {
+                removed = false;
+                if (bur.getRole() == UserRole.ROLE_ADMIN) {
+                    isAdmin = true;
+                }
+            }
+        }
+
+        NotificationType nf;
+
+        if (removed) {
+            nf = NotificationType.REMOVED_FROM_BOARD;
+        } else if (isAdmin) {
+            nf = NotificationType.MADE_ADMIN;
+        } else {
+            nf = NotificationType.REMOVED_ADMIN;
+        }
+
+        Notification notification = notificationService.createNotification(
+                SecurityUtil.getUserDetails(),
+                boardUserRole.getUser(),
+                nf,
+                boardService.findBySlug(slug),
+                null,
+                null,
+                "#/b/" + slug);
+        webSocketService.sendNotification(boardUserRole.getUser().getEmail(), notification);
+
+        return new ResponseEntity<>(newBoardUserRole, HttpStatus.OK);
     }
 
 }

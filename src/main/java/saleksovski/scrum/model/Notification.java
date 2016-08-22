@@ -40,6 +40,9 @@ public class Notification extends BaseEntity<Long> {
     @ManyToOne
     private Task task;
 
+    @Column
+    private String url;
+
     @Override
     public Long getId() {
         return id;
@@ -99,5 +102,13 @@ public class Notification extends BaseEntity<Long> {
 
     public void setTask(Task task) {
         this.task = task;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
     }
 }
