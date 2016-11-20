@@ -27,7 +27,7 @@ import javax.sql.DataSource;
  */
 @Configuration
 @EnableSocial
-@PropertySource(value="social.properties")
+@PropertySource(value = "social.properties")
 public class SocialContext implements SocialConfigurer {
 
     @SuppressWarnings("SpringJavaAutowiringInspection")

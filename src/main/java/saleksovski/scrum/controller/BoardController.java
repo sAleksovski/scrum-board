@@ -130,4 +130,12 @@ public class BoardController {
         return new ResponseEntity<>(newBoardUserRole, HttpStatus.OK);
     }
 
+    @RequestMapping(value = "/{slug}/users/{boardUserRole}", method = RequestMethod.DELETE)
+    public
+    @ResponseBody
+    ResponseEntity<Boolean> deleteUserInBoard(@PathVariable String slug, @PathVariable Long boardUserRole) throws UserNotAuthenticated {
+        boolean deleted = boardService.deleteUserFromBoard(SecurityUtil.getUserDetails(), slug, boardUserRole);
+        return new ResponseEntity<>(deleted, HttpStatus.OK);
+    }
+
 }

@@ -115,4 +115,39 @@ public class BoardService {
         return myBoard.getBoardUserRole();
     }
 
+    public boolean deleteUserFromBoard(MyUser currentUser, String slug, Long boardUserRole) {
+        Board board = findBySlug(slug);
+
+        boolean canDelete = false;
+
+        int admins = 0;
+
+        BoardUserRole boardUserRoleToDelete = null;
+
+        for (BoardUserRole bur :
+                board.getBoardUserRole()) {
+            if (bur.getUser().getId() == currentUser.getId() && bur.getRole() == UserRole.ROLE_ADMIN) {
+                canDelete = true;
+            }
+
+            if (bur.getRole() == UserRole.ROLE_ADMIN) {
+                admins++;
+            }
+
+            if (bur.getId() == boardUserRole) {
+                boardUserRoleToDelete = bur;
+            }
+        }
+
+        if (!canDelete) {
+            return false;
+        }
+
+        if (boardUserRoleToDelete != null && boardUserRoleToDelete.getRole() == UserRole.ROLE_ADMIN && admins < 2) {
+            return false;
+        }
+
+        boardUserRoleRepository.delete(boardUserRoleToDelete);
+        return true;
+    }
 }

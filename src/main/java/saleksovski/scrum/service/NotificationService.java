@@ -1,6 +1,8 @@
 package saleksovski.scrum.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import saleksovski.auth.model.MyUser;
 import saleksovski.scrum.model.Board;
@@ -25,8 +27,9 @@ public class NotificationService {
         this.notificationRepository = notificationRepository;
     }
 
-    public List<Notification> findByUser(MyUser user) {
-        return notificationRepository.findByUserOrderByIdDesc(user);
+    public List<Notification> findByUser(MyUser user, int page, int size) {
+        Pageable pageRequest = new PageRequest(page, size);
+        return notificationRepository.findByUserOrderByIdDesc(user, pageRequest);
     }
 
     public Notification createNotification(MyUser creator, MyUser user, NotificationType notificationType, Board board, Sprint sprint, Task task, String url) {
@@ -52,8 +55,7 @@ public class NotificationService {
             }
             return notificationRepository.save(notification);
         } else {
-            Notification notification = null;
-            notification = new Notification();
+            Notification notification = new Notification();
             notification.getCreators().add(creator);
             notification.setUser(user);
             notification.setNotificationType(notificationType);
@@ -63,10 +65,12 @@ public class NotificationService {
             notification.setTask(task);
             notification.setUrl(url);
 
-            notification.setUnread(true);
             notification.getCreators().add(user);
             return notificationRepository.save(notification);
         }
     }
 
+    public void markAsRead(MyUser user) {
+        notificationRepository.markAsReadForUser(user);
+    }
 }
