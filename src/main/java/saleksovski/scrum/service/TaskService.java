@@ -94,7 +94,8 @@ public class TaskService {
             return null;
         }
         oldTask.setName(task.getName());
-        if (!Objects.equals(oldTask.getAssignedTo().getId(), task.getAssignedTo().getId())) {
+        if (task.getAssignedTo() != null
+                && !Objects.equals(oldTask.getAssignedTo().getId(), task.getAssignedTo().getId())) {
             MyUser au = userRepository.findByEmail(task.getAssignedTo().getEmail());
             if (au != null) {
                 oldTask.setAssignedTo(au);
