@@ -5,14 +5,14 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import saleksovski.auth.model.MyUser;
-import saleksovski.scrum.model.Board;
-import saleksovski.scrum.model.Notification;
-import saleksovski.scrum.model.Sprint;
-import saleksovski.scrum.model.Task;
+import saleksovski.scrum.model.*;
 import saleksovski.scrum.model.enums.NotificationType;
 import saleksovski.scrum.repository.NotificationRepository;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Created by stefan on 5/28/16.
@@ -72,5 +72,26 @@ public class NotificationService {
 
     public void markAsRead(MyUser user) {
         notificationRepository.markAsReadForUser(user);
+    }
+
+    public List<Notification> createAddCommentNotifications(Comment comment, String url, MyUser commentCreator) {
+        Set<MyUser> affectedUsers = new HashSet<>();
+
+        comment.getTask().getComments().forEach(c -> affectedUsers.add(c.getCreator()));
+        affectedUsers.add(comment.getTask().getAssignedTo());
+        affectedUsers.add(comment.getTask().getCreatedBy());
+        affectedUsers.remove(commentCreator);
+
+        return affectedUsers.stream()
+                .map(u -> createNotification(
+                        commentCreator,
+                        u,
+                        NotificationType.COMMENTED_ON_TASK,
+                        null,
+                        null,
+                        comment.getTask(),
+                        url
+                ))
+                .collect(Collectors.toList());
     }
 }

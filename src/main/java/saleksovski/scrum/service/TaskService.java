@@ -109,7 +109,7 @@ public class TaskService {
         return taskRepository.save(oldTask);
     }
 
-    public Comment addComment(String slug, Long sprintId, Long taskId, String text) {
+    public Comment addComment(String slug, Long sprintId, Long taskId, String text, MyUser taskCreator) {
         Task oldTask = taskRepository.findOne(taskId);
         if (oldTask == null
                 || !Objects.equals(oldTask.getSprint().getId(), sprintId)
@@ -120,13 +120,7 @@ public class TaskService {
         comment.setText(text);
         comment.setTask(oldTask);
         MyUser user;
-        try {
-            user = SecurityUtil.getUserDetails();
-        } catch (UserNotAuthenticated userNotAuthenticated) {
-            userNotAuthenticated.printStackTrace();
-            return null;
-        }
-        comment.setCreator(user);
+        comment.setCreator(taskCreator);
         return commentRepository.save(comment);
     }
 }

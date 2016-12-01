@@ -83,20 +83,15 @@ public class TaskController {
 
     @RequestMapping(value = "/{taskId}/comments", method = RequestMethod.POST)
     public ResponseEntity<Comment> addComment(@PathVariable String slug, @PathVariable Long sprintId, @PathVariable Long taskId, @RequestBody String comment) throws UserNotAuthenticated {
-        Comment newComment = taskService.addComment(slug, sprintId, taskId, comment);
+        Comment newComment = taskService.addComment(slug, sprintId, taskId, comment, SecurityUtil.getUserDetails());
         if (newComment == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         String url = "#/b/" + slug + "/tasks/" + sprintId + "-" + taskId;
-        Notification notification = notificationService.createNotification(
-                SecurityUtil.getUserDetails(),
-                newComment.getTask().getAssignedTo(),
-                NotificationType.COMMENTED_ON_TASK,
-                null,
-                null,
-                newComment.getTask(),
-                url);
-        webSocketService.sendNotification(newComment.getTask().getAssignedTo().getEmail(), notification);
+        List<Notification> notifications = notificationService.createAddCommentNotifications(newComment, url, SecurityUtil.getUserDetails());
+
+        notifications.forEach(n -> webSocketService.sendNotification(n.getUser().getEmail(), n));
+
         return new ResponseEntity<>(newComment, HttpStatus.CREATED);
     }
 
